@@ -1,15 +1,36 @@
-const express= require("express");
+const express = require('express');
+const path = require('path');
+const ejs = require('ejs'); //view engine
+
+
 const app = express();
 
-const port= 3000;
+//VİEW ENGİNE
+app.set('view engine', 'ejs');
 
-app.get("/veri",function(req,res)
-{
-    const blog = {id: 1, title: 'Blog title', description: 'Blog description'}
-    res.send(blog);
+//MİDDLEWARE
+app.use(express.static('public')); // Static dosyaları koyacağımız klasörü seçtik
+app.use(express.urlencoded({ extended: true })); // Body parser
+app.use(express.json()); // Body parser
+
+//ROUTES
+app.get('/', (req, res) => {
+  res.render('index');
+});
+app.get('/about', (req, res) => {
+  res.render('about');
 });
 
-app.listen(port, () =>
-{
-    console.log("3000 nolu port başlatıldı");
+app.get('/add', (req, res) => {
+  res.render('add');
+});
+
+app.post('/photos', (req, res) => {
+  console.log(req.body);
+  res.redirect('/');
+});
+
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server ${port} portunda dinleniyor`);
 });
